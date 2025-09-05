@@ -1,0 +1,27 @@
+
+
+fun find_peak(A, low, high) {
+    if (low == high) {
+        return low;
+    }
+
+    var mid = (low + high) / 2;   
+    if (A[mid] < A[mid + 1]) {
+        // peak is to the right
+        return find_peak(A, mid + 1, high);
+    } else {
+        // peak is at mid or to the left
+        return find_peak(A, low, mid);
+    }
+}
+
+//main func
+fun main() {
+    var A = [0, 1, 2, 3, 2];
+    var index = find_peak(A, 0, len(A) - 1);
+    printf("Peak index: %d\n", index);
+    printf("Peak value: %d\n", A[index]);
+}
+
+//run main
+main();
