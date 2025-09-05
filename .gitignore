@@ -1,0 +1,14 @@
+# OS junk
+.DS_Store
+
+# Python
+__pycache__/
+*.pyc
+
+# C++
+*.out
+*.o
+*.exe
+
+# Rhythm
+*.rh~
