@@ -1,0 +1,42 @@
+fun flipPancakes(A, safeIndex) 
+{
+
+  int largest = -10000000; 
+  
+  //base case 
+  if (safeIndex == 1)
+  {
+    return A; 
+  }
+
+  //find the largest num 
+  for(int i = 0; i<A.size(); i++)
+    {
+      if(A[i] > largest)
+      {
+          largest = A[i];
+      }
+    }
+
+
+  //check if largest num is at the front 
+  if(A[0]== largest) //case 1; 
+  {
+    // flip the pancakes at index safe-1
+    //return recursive step of safeIndex-1
+    flip(safeIndex); 
+  }
+  else
+  {
+    //case 2; if largest number not at the front of the array 
+    flip(largest); 
+    flip(safeIndex); 
+  }
+
+
+  
+  flipPancakes(A, safeIndex-1); 
+
+
+}
+
