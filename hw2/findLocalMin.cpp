@@ -39,7 +39,7 @@ int findLocalMin(int array[], int arraysize)
         
         
         //check if mid itself is a local minimum 
-        if(leftNeighbor<= midValue && midValue<= rightNeighbor)
+        if(midValue<= leftNeighbor && midValue<= rightNeighbor)
         {
             //if less than both leftNeighbor and rightNeighbor then it is local minima 
             //then return that index 
