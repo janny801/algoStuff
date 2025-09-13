@@ -69,7 +69,7 @@ int findLocalMin(int array[], int arraysize)
 int main()
 {
     
-    int arraysize = 16;
+    const int arraysize = 16;
     
     int arr[arraysize] = {9,7,7,2,1,3,7,5,4,7,3,3,4,8,6,9};
     
