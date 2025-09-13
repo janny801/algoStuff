@@ -68,11 +68,11 @@ int findLocalMin(int array[], int arraysize)
 
 int main()
 {
-    
-    const int arraysize = 16;
-    
-    int arr[arraysize] = {9,7,7,2,1,3,7,5,4,7,3,3,4,8,6,9};
-    
+        
+    int arr[] = {9,7,7,2,1,3,7,5,4,7,3,3,4,8,6,9};
+        
+    //find the size of the array 
+    int arraysize = sizeof(arr)/ sizeof(arr[0]); 
     
     //pass into function 
     int localMinIndex = findLocalMin(arr, arraysize); 
