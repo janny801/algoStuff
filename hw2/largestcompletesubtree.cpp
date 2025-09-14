@@ -19,7 +19,7 @@ struct treenode {
 };
 
 
-int findlargestsubtree(treenode*currentnode) 
+int findlargestsubtree(treenode*currentnode, treenode* &bestnode, int &bestdepth) 
 {
     //base case; empty subtree is considered perfect with height = 0
     if(currentnode == nullptr)
@@ -28,8 +28,8 @@ int findlargestsubtree(treenode*currentnode)
     }
     
     //recursion ; check left and right subtrees and get heights
-    int leftheight = findlargestsubtree(currentnode-> left); 
-    int rightheight = findlargestsubtree(currentnode-> right); 
+    int leftheight = findlargestsubtree(currentnode-> left, bestnode, bestdepth); 
+    int rightheight = findlargestsubtree(currentnode-> right, bestnode, bestdepth); 
    
     
     //find the smaller height between the left and right subtrees
@@ -40,6 +40,13 @@ int findlargestsubtree(treenode*currentnode)
     }
     
     int height = 1+ shorterheight; //or; 1+ min(leftheight, rightheight)
+    
+    //if this current node has largest perfect subtree so far; update bestdepth&bestnode
+    if(height>bestdepth)
+    {
+        bestdepth = height; 
+        bestnode = currentnode; 
+    }
     
     
     //return this subtrees height to the parent call 
@@ -71,12 +78,22 @@ int main()
     n3->left = n1;  n3->right = n4;
     n7->left = n6;
     
-    int height = findlargestsubtree(n5); 
-
+    treenode*root = n5; 
     
     //change this to test diff inputs 
+    
+    
+    
+    
+    
+    
+    //pass to function and output 
+    treenode *bestnode = nullptr; 
+    int bestdepth = 0; 
+    int height = findlargestsubtree(root, bestnode, bestdepth); 
 
     cout<<"largest perfect subtree depth: "<<height<<endl; 
+    cout<<"root of perfect subtree: "<<bestnode->value<<endl; 
 
     return 0;
 }
