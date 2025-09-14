@@ -1,0 +1,45 @@
+
+fun findLocalMin(array, arraysize)
+{
+    //write func
+
+
+
+
+
+    return -1; 
+}
+
+
+
+
+//main function 
+fun main()
+{
+
+    var arr = [9, 7, 7, 2, 1, 3, 7, 5, 4, 7, 3, 3, 4, 8, 6, 9];
+
+    // get size of array 
+    var arraysize = len(arr); 
+
+    //call the func 
+    var localMinIndex = findLocalMin(arr,arraysize); 
+
+    //print the result 
+    if(localMinIndex==-1)
+    {
+        print("no local minima found"); 
+    }
+    else
+    {
+        print("One of the local minima is located at..."); 
+        print("Index: "+ localMinIndex); 
+        print("Value: "+ arr[localMinIndex]); 
+    }
+
+    print("Hello World"); 
+
+}
+
+//entrypoint for compilation lol i always forget
+main(); 
