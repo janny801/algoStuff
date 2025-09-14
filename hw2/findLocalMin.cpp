@@ -9,8 +9,7 @@ using namespace std;
 
 int findLocalMin(int array[], int arraysize)
 {
-    // func 
-    
+
     //step 1; find values for hi/low 
     int low = 1; 
     int high = arraysize-2; 
@@ -25,7 +24,7 @@ int findLocalMin(int array[], int arraysize)
     }
 
     //step 3; check values left and right of mid 
-    //iterate similar to binary sear
+    //iterate similar to binary search
     
     while(low<= high )
     {
