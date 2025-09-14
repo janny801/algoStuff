@@ -1,84 +1,121 @@
-//need make into rhythm code
-//find local minimum in an array 
-
+//hw2; find largest complete subtree in binary tree
+//need to make into rhythm code 
 
 #include <stdio.h>
 #include <iostream> 
-
+#include <algorithm> 
 using namespace std; 
 
-int findLocalMin(int array[], int arraysize)
+struct treenode {
+    int value;
+    treenode* left;
+    treenode* right;
+    // constructor to easily create a new node
+    treenode(int v) {
+        value = v;
+        left = nullptr;
+        right = nullptr;
+    }
+
+};
+
+
+int findlargestsubtree(treenode*currentnode, treenode* &bestnode, int &bestdepth) 
 {
-
-    //step 1; find values for hi/low 
-    int low = 1; 
-    int high = arraysize-2; 
-    
-    //step 2; find value for mid 
-    int mid = (low+high)/2; 
-    
-    //edge case; if the array has less than 3 elements
-    if(arraysize<3)
+    //base case; empty subtree is considered perfect with height = 0
+    if(currentnode == nullptr)
     {
-        return -1; 
+        return -1; //empty = -1 edges ,, makes the leaf node 0 
     }
-
-    //step 3; check values left and right of mid 
-    //iterate similar to binary search
     
-    while(low<= high )
+    //recursion ; check left and right subtrees and get heights
+    int leftheight = findlargestsubtree(currentnode-> left, bestnode, bestdepth); 
+    int rightheight = findlargestsubtree(currentnode-> right, bestnode, bestdepth); 
+    
+    int height = 1+ min(leftheight,rightheight); 
+    
+    //if this current node has largest perfect subtree so far; update bestdepth&bestnode
+    if(height>bestdepth)
     {
-        // udpate mid witheach iteration based on current values of low/high
-        mid = (low+ high )/2; 
-        
-        //get values for neighbors and mid 
-        int leftNeighbor = array[mid-1]; 
-        int midValue = array[mid]; 
-        int rightNeighbor = array[mid+1];
-        
-        
-        //check if mid itself is a local minimum 
-        if(midValue<= leftNeighbor && midValue<= rightNeighbor)
-        {
-            //if less than both leftNeighbor and rightNeighbor then it is local minima 
-            //then return that index 
-            return mid; 
-        }
-        else if(leftNeighbor < midValue)
-        {
-            //case 1(not local min); midValue greater than leftNeighbor
-            
-            
-            //shift focus to check the left side of the array 
-            high = mid -1; 
-        }
-        else
-        {
-            //case 2 (not local min); midValue greater than rightNeighbor
-            low = mid +1; 
-        }
-        
+        bestdepth = height; 
+        bestnode = currentnode; 
     }
-    //shouldnt reach here if i coded this right ; but need to include for c++ compilation
     
-    return -1; 
+    
+    //return this subtrees height to the parent call 
+    return height; 
     
 }
 
+
 int main()
 {
-        
-    int arr[] = {9,7,7,2,1,3,7,5,4,7,3,3,4,8,6,9};
-        
-    //find the size of the array 
-    int arraysize = sizeof(arr)/ sizeof(arr[0]); 
     
-    //pass into function 
-    int localMinIndex = findLocalMin(arr, arraysize); 
+    //change this to test diff inputs 
     
-    cout<<"One of the local minima is located at..." <<endl
-    <<"Index: "<<localMinIndex<<endl<<"Value: "<<arr[localMinIndex]<<endl; 
+    /*
+                n1
+               /  \
+             n2    n3
+            /     /  \
+          n4     n5    n6
+                / \    / \
+              n7  n8  n9 n10
+             / \ / \  / \ / \
+           n11 n12 n13 n14 n15 n16 n17 n18
     
+    largest complete subtree should be rooted at n3 with depth = 3 (edges)
+    root n1 is not balanced so its height will be smaller
+    */
+    
+    treenode* n1 = new treenode(1);
+    treenode* n2 = new treenode(2);
+    treenode* n3 = new treenode(3);
+    treenode* n4 = new treenode(4);
+    treenode* n5 = new treenode(5);
+    treenode* n6 = new treenode(6);
+    treenode* n7 = new treenode(7);
+    treenode* n8 = new treenode(8);
+    treenode* n9 = new treenode(9);
+    treenode* n10 = new treenode(10);
+    treenode* n11 = new treenode(11);
+    treenode* n12 = new treenode(12);
+    treenode* n13 = new treenode(13);
+    treenode* n14 = new treenode(14);
+    treenode* n15 = new treenode(15);
+    treenode* n16 = new treenode(16);
+    treenode* n17 = new treenode(17);
+    treenode* n18 = new treenode(18);
+    
+    n1->left = n2;   n1->right = n3;
+    n2->left = n4;
+    
+    n3->left = n5;   n3->right = n6;
+    n5->left = n7;   n5->right = n8;
+    n6->left = n9;   n6->right = n10;
+    
+    n7->left = n11;  n7->right = n12;
+    n8->left = n13;  n8->right = n14;
+    n9->left = n15;  n9->right = n16;
+    n10->left = n17; n10->right = n18;
+    
+    treenode* root = n1;
+
+    
+    //change this to test diff inputs 
+    
+    
+    
+    
+    
+    
+    //pass to function and output 
+    treenode *bestnode = nullptr; 
+    int bestdepth = 0; 
+    int height = findlargestsubtree(root, bestnode, bestdepth); 
+
+    cout<<"largest perfect subtree depth: "<<bestdepth<<endl; 
+    cout<<"root of perfect subtree: "<<bestnode->value<<endl; 
 
     return 0;
 }
