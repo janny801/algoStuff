@@ -10,7 +10,12 @@ struct treenode {
     treenode* left;
     treenode* right;
     // constructor to easily create a new node
-    treenode(int v) : value(v), left(nullptr), right(nullptr) {}
+    treenode(int v) {
+        value = v;
+        left = nullptr;
+        right = nullptr;
+    }
+
 };
 
 
