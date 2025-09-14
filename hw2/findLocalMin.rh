@@ -7,6 +7,12 @@ fun findLocalMin(array, arraysize)
 
     //step 2; find initial value for mid 
     var mid = (low+high)/2; 
+
+    //check if array has less than 3 elements
+    if(arraysize<3)
+    {
+        return -1; 
+    }
     
     //step 3; check values left and right of mid 
     while(low<= high)
