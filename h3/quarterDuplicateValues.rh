@@ -1,4 +1,5 @@
 //quarter duplicate values rhythm code 
+//switched to misra strat instead of quickselect (in comparison to corresponding c++ program )
 
 
 fun quarterDuplicateValues(inputArray) {
