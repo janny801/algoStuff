@@ -1,0 +1,85 @@
+fun isopeningsymbol(ch) {
+    if (ch == "(" or ch == "[") return true;
+    return false;
+}
+
+fun isclosingsymbol(ch) {
+    if (ch == ")" or ch == "]") return true;
+    return false;
+}
+
+fun isvalidpair(openingch, closingch) {
+    if (openingch == "(" and closingch == ")") return true;
+    if (openingch == "[" and closingch == "]") return true;
+    return false;
+}
+
+fun isbalancedstring(chararray) {
+    var symbolstack = [];
+    for (var i = 0; i < len(chararray); i = i + 1) {
+        var currsymbol = chararray[i];
+        if (isopeningsymbol(currsymbol)) {
+            push(symbolstack, currsymbol);
+        } else {
+            if (len(symbolstack) == 0) return false;
+            var topsymbol = pop(symbolstack);
+            if (isvalidpair(topsymbol, currsymbol) == false) return false;
+        }
+    }
+    if (len(symbolstack) == 0) return true;
+    return false;
+}
+
+fun longbalanlen(chararray) {
+    var inputlength = len(chararray);
+    var longestbalancedeach = [];
+
+    for (var i = 0; i < inputlength; i = i + 1) {
+        var row = [];
+        for (var j = 0; j < inputlength; j = j + 1) push(row, 0);
+        push(longestbalancedeach, row);
+    }
+
+    for (var subseqlen = 2; subseqlen <= inputlength; subseqlen = subseqlen + 1) {
+        for (var startind = 0; startind <= inputlength - subseqlen; startind = startind + 1) {
+            var endind = startind + subseqlen - 1;
+            var bestlen = longestbalancedeach[startind + 1][endind];
+
+            if (isopeningsymbol(chararray[startind])) {
+                for (var maybematch = startind + 1; maybematch <= endind; maybematch = maybematch + 1) {
+                    if (isclosingsymbol(chararray[maybematch]) and isvalidpair(chararray[startind], chararray[maybematch])) {
+                        var innerlen = 0;
+                        if (maybematch - 1 >= startind + 1)
+                            innerlen = longestbalancedeach[startind + 1][maybematch - 1];
+                        var rightlen = 0;
+                        if (maybematch + 1 <= endind)
+                            rightlen = longestbalancedeach[maybematch + 1][endind];
+                        var totallen = innerlen + 2 + rightlen;
+                        if (totallen > bestlen)
+                            bestlen = totallen;
+                    }
+                }
+            }
+            longestbalancedeach[startind][endind] = bestlen;
+        }
+    }
+
+    if (inputlength == 0) return 0;
+    return longestbalancedeach[0][inputlength - 1];
+}
+
+// --------------------- main ----------------------
+var inputstring = "([()][]())[()()]()";
+
+// convert manually into an array of single-character strings
+var chararray = ["(", "[", "(", ")", "]", "[", "]", "(", ")", "[", "(", ")", "(", ")", "]", "(", ")", ")"];
+
+var result = isbalancedstring(chararray);
+if (result) {
+    print "it is balanced";
+} else {
+    print "it is not balanced";
+}
+
+var longestlen = longbalanlen(chararray);
+printf("longest len = %d\n", longestlen);
