@@ -70,9 +70,13 @@ def longestoscsubseq(input_values):
 
 
 if __name__ == '__main__':
-    # Read space-separated integers from user (no prompt shown)
+    # get user input
     input_string = input().strip()
     input_values = list(map(int, input_string.split()))
+
+    # Display the input for debugging
+    print("Input sequence:", input_string)
+    print()
 
     # Compute both results using DP
     bitonic_length = longestbitonicsubseq(input_values)
