@@ -3,10 +3,6 @@
 #2. find longest oscillating subsequence
 
 def longestbitonicsubseq(input_values):
-    """
-    Computes the Longest Bitonic Subsequence length (strictly increasing then strictly decreasing)
-    using dynamic programming (tabulation, O(n^2) time).
-    """
     n = len(input_values)
     if n == 0:
         return 0
@@ -36,11 +32,6 @@ def longestbitonicsubseq(input_values):
 
 
 def longestoscsubseq(input_values):
-    """
-    Computes the Longest Oscillating Subsequence length
-    (X[i]<X[i+1] for even i, X[i]>X[i+1] for odd i)
-    using dynamic programming (tabulation, O(n^2) time).
-    """
     n = len(input_values)
     if n == 0:
         return 0
