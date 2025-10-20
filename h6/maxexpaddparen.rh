@@ -1,0 +1,171 @@
+// Maximum expression by adding parentheses (Dynamic Programming)
+// Direct translation of working Python version
+
+fun str_to_int(num_arr)
+{
+    var total = 0;
+    var neg = false;
+    var i = 0;
+
+    if(len(num_arr) > 0 and num_arr[0] == "-")
+    {
+        neg = true;
+        i = 1;
+    }
+
+    while(i < len(num_arr))
+    {
+        var ch = num_arr[i];
+        var digit = 0;
+        if(ch == "0") digit = 0;
+        if(ch == "1") digit = 1;
+        if(ch == "2") digit = 2;
+        if(ch == "3") digit = 3;
+        if(ch == "4") digit = 4;
+        if(ch == "5") digit = 5;
+        if(ch == "6") digit = 6;
+        if(ch == "7") digit = 7;
+        if(ch == "8") digit = 8;
+        if(ch == "9") digit = 9;
+        total = total * 10 + digit;
+        i = i + 1;
+    }
+
+    if(neg) total = -1 * total;
+    return total;
+}
+
+fun maxexpressionaddingparen(chararray)
+{
+    // remove spaces
+    var normalized = [];
+    var i = 0;
+    while(i < len(chararray))
+    {
+        var ch = chararray[i];
+        if(ch != " ")
+        {
+            push(normalized, ch);
+        }
+        i = i + 1;
+    }
+
+    // parse into numbers and operators
+    var numbers = [];
+    var operators = [];
+    var num = [];
+
+    var idx = 0;
+    while(idx < len(normalized))
+    {
+        var ch = normalized[idx];
+        if((ch == "+") or (ch == "-"))
+        {
+            if(len(num) > 0)
+            {
+                push(numbers, str_to_int(num));
+                push(operators, ch);
+                num = [];
+            }
+            else
+            {
+                if(ch == "-") push(num, "-");
+            }
+        }
+        else
+        {
+            push(num, ch);
+        }
+        idx = idx + 1;
+    }
+
+    if(len(num) > 0) push(numbers, str_to_int(num));
+
+    var n = len(numbers);
+    var dp_max = [];
+    var dp_min = [];
+
+    var a = 0;
+    while(a < n)
+    {
+        var row_max = [];
+        var row_min = [];
+        var b = 0;
+        while(b < n)
+        {
+            push(row_max, 0);
+            push(row_min, 0);
+            b = b + 1;
+        }
+        push(dp_max, row_max);
+        push(dp_min, row_min);
+        a = a + 1;
+    }
+
+    var t = 0;
+    while(t < n)
+    {
+        dp_max[t][t] = numbers[t];
+        dp_min[t][t] = numbers[t];
+        t = t + 1;
+    }
+
+    var length = 2;
+    while(length <= n)
+    {
+        var i = 0;
+        while(i <= n - length)
+        {
+            var j = i + length - 1;
+            dp_max[i][j] = -9999999;
+            dp_min[i][j] = 9999999;
+
+            var k = i;
+            while(k < j)
+            {
+                var op = operators[k];
+                var left_max = dp_max[i][k];
+                var left_min = dp_min[i][k];
+                var right_max = dp_max[k + 1][j];
+                var right_min = dp_min[k + 1][j];
+
+                var max_val = 0;
+                var min_val = 0;
+
+                if(op == "+")
+                {
+                    max_val = left_max + right_max;
+                    min_val = left_min + right_min;
+                }
+                else
+                {
+                    // restricted subtraction only
+                    max_val = left_max - right_max;
+                    min_val = left_min - right_min;
+                }
+
+                if(max_val > dp_max[i][j]) dp_max[i][j] = max_val;
+                if(min_val < dp_min[i][j]) dp_min[i][j] = min_val;
+
+                k = k + 1;
+            }
+            i = i + 1;
+        }
+        length = length + 1;
+    }
+
+    return dp_max[0][n - 1];
+}
+
+fun main()
+{
+    print("input expression: 1+3-2-5+1-6+7");
+
+    var chararray = ["1", "+", "3", "-", "2", "-", "5", "+", "1", "-", "6", "+", "7"];
+
+    var result = maxexpressionaddingparen(chararray);
+
+    printf("max possible value = %d\n", result);
+}
+
+main();
