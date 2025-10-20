@@ -1,4 +1,4 @@
-// Maximum expression by adding parentheses 
+// Maximum expression by adding parentheses (Dynamic Programming)
 
 fun str_to_int(num_arr)
 {
@@ -34,85 +34,85 @@ fun str_to_int(num_arr)
     return total;
 }
 
-fun maxexpressionaddingparen(chararray)
+fun maxexpressionaddingparen(tokens)
 {
     var numbers = [];
     var operators = [];
-    var num = [];
+    var current_num = [];
 
-    var idx = 0;
-    while(idx < len(chararray))
+    var pos = 0; // same as old idx
+    while(pos < len(tokens))
     {
-        var ch = chararray[idx];
+        var ch = tokens[pos];
         if((ch == "+") or (ch == "-"))
         {
-            if(len(num) > 0)
+            if(len(current_num) > 0)
             {
-                push(numbers, str_to_int(num));
+                push(numbers, str_to_int(current_num));
                 push(operators, ch);
-                num = [];
+                current_num = [];
             }
             else
             {
-                if(ch == "-") push(num, "-");
+                if(ch == "-") push(current_num, "-");
             }
         }
         else
         {
-            push(num, ch);
+            push(current_num, ch);
         }
-        idx = idx + 1;
+        pos = pos + 1;
     }
 
-    if(len(num) > 0) push(numbers, str_to_int(num));
+    if(len(current_num) > 0) push(numbers, str_to_int(current_num));
 
-    var n = len(numbers);
-    var dp_max = [];
-    var dp_min = [];
+    var count = len(numbers);
+    var max_table = [];  // replaces dp_max
+    var min_table = [];  // replaces dp_min
 
     var a = 0;
-    while(a < n)
+    while(a < count)
     {
         var row_max = [];
         var row_min = [];
         var b = 0;
-        while(b < n)
+        while(b < count)
         {
             push(row_max, 0);
             push(row_min, 0);
             b = b + 1;
         }
-        push(dp_max, row_max);
-        push(dp_min, row_min);
+        push(max_table, row_max);
+        push(min_table, row_min);
         a = a + 1;
     }
 
     var t = 0;
-    while(t < n)
+    while(t < count)
     {
-        dp_max[t][t] = numbers[t];
-        dp_min[t][t] = numbers[t];
+        max_table[t][t] = numbers[t];
+        min_table[t][t] = numbers[t];
         t = t + 1;
     }
 
-    var length = 2;
-    while(length <= n)
+    var sub_len = 2;
+    while(sub_len <= count)
     {
         var i = 0;
-        while(i <= n - length)
+        while(i <= count - sub_len)
         {
-            var j = i + length - 1;
-            dp_max[i][j] = -9999999;
-            dp_min[i][j] = 9999999;
+            var j = i + sub_len - 1;
+            max_table[i][j] = -9999999;
+            min_table[i][j] = 9999999;
 
-            var k = i;
-            while(k < j)
+            var split = i;
+            while(split < j)
             {
-                var op = operators[k];
-                var left_max = dp_max[i][k];
-                var left_min = dp_min[i][k];
-                var right_max = dp_max[k + 1][j];
-                var right_min = dp_min[k + 1][j];
+                var op = operators[split];
+                var left_max = max_table[i][split];
+                var left_min = min_table[i][split];
+                var right_max = max_table[split + 1][j];
+                var right_min = min_table[split + 1][j];
 
                 var max_val = 0;
                 var min_val = 0;
@@ -124,31 +124,31 @@ fun maxexpressionaddingparen(chararray)
                 }
                 else
                 {
-                    // restricted subtraction only
+                    // restricted subtraction
                     max_val = left_max - right_max;
                     min_val = left_min - right_min;
                 }
 
-                if(max_val > dp_max[i][j]) dp_max[i][j] = max_val;
-                if(min_val < dp_min[i][j]) dp_min[i][j] = min_val;
+                if(max_val > max_table[i][j]) max_table[i][j] = max_val;
+                if(min_val < min_table[i][j]) min_table[i][j] = min_val;
 
-                k = k + 1;
+                split = split + 1;
             }
             i = i + 1;
         }
-        length = length + 1;
+        sub_len = sub_len + 1;
     }
 
-    return dp_max[0][n - 1];
+    return max_table[0][count - 1];
 }
 
 fun main()
 {
     print("input expression: 1+3-2-5+1-6+7");
 
-    var chararray = ["1", "+", "3", "-", "2", "-", "5", "+", "1", "-", "6", "+", "7"];
+    var tokens = ["1", "+", "3", "-", "2", "-", "5", "+", "1", "-", "6", "+", "7"];
 
-    var result = maxexpressionaddingparen(chararray);
+    var result = maxexpressionaddingparen(tokens);
 
     printf("max possible value = %d\n", result);
 }
