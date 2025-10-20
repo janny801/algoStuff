@@ -1,5 +1,4 @@
-// Maximum expression by adding parentheses (Dynamic Programming)
-// Direct translation of working Python version
+// Maximum expression by adding parentheses 
 
 fun str_to_int(num_arr)
 {
@@ -37,28 +36,14 @@ fun str_to_int(num_arr)
 
 fun maxexpressionaddingparen(chararray)
 {
-    // remove spaces
-    var normalized = [];
-    var i = 0;
-    while(i < len(chararray))
-    {
-        var ch = chararray[i];
-        if(ch != " ")
-        {
-            push(normalized, ch);
-        }
-        i = i + 1;
-    }
-
-    // parse into numbers and operators
     var numbers = [];
     var operators = [];
     var num = [];
 
     var idx = 0;
-    while(idx < len(normalized))
+    while(idx < len(chararray))
     {
-        var ch = normalized[idx];
+        var ch = chararray[idx];
         if((ch == "+") or (ch == "-"))
         {
             if(len(num) > 0)
