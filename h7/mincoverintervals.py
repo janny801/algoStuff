@@ -54,8 +54,11 @@ if __name__ == '__main__':
     left_endpoints = [1, 2, 3, 6, 7, 10]
     right_endpoints = [5, 4, 8, 9, 12, 11]
 
-    ## add output for the left and right endpoitns so that i can see original input 
-        #and then the output from those intervals
+    #print input intervals for debug
+    print("left endpoints: ", left_endpoints)
+    print("right endpoints:", right_endpoints)
+
+    print()  #readabijlity lol 
 
     result = smallest_interval_cover(left_endpoints, right_endpoints)
 
